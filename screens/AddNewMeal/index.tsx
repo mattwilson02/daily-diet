@@ -1,48 +1,24 @@
-import { useCallback, useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Button, Pressable, Text, TextInput, View } from "react-native";
+import { useCallback, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { Pressable, Text, View } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
-type FormValues = {
-  name: string;
-  description: string;
-  date: string;
-  time: string;
-  isInDiet: boolean;
-};
-
-const dietSelectOptions = [
-  {
-    id: 1,
-    label: "Yes",
-    isInDiet: true,
-    color: "green",
-  },
-  {
-    id: 2,
-    label: "No",
-    isInDiet: false,
-    color: "red",
-  },
-];
-
-const dateTimePickerOptions = [
-  {
-    mode: "date",
-    title: "Show date picker",
-  },
-  {
-    mode: "time",
-    title: "Show time picker",
-  },
-];
+import { dateTimePickerOptions } from "../../constants/addMeal";
+import { DateTimePickerOption } from "../../interfaces/addMeal";
+import InputForm from "../../components/InputForm";
+import DietToggle from "../../components/DietToggle";
+import { format, getTime } from "date-fns";
 
 const AddNewMeal = () => {
-  const { handleSubmit, control } = useForm<FormValues>();
   const [date, setDate] = useState(new Date());
-  const [pickerMode, setPickerMode] = useState<"date" | "time" | null>(null);
+  const [pickerMode, setPickerMode] = useState<
+    DateTimePickerOption["mode"] | null
+  >(null);
 
-  const onSubmit = useCallback((data: FormValues) => {
+  const { handleSubmit, control } = useForm<FieldValues>({
+    mode: "onChange",
+  });
+
+  const onSubmit = useCallback((data: FieldValues) => {
     console.log(data);
     console.log(date);
   }, []);
@@ -50,70 +26,47 @@ const AddNewMeal = () => {
   return (
     <>
       <View style={{ flex: 1 }}>
-        {dateTimePickerOptions.map((option) => {
-          return (
-            <Pressable onPress={() => setPickerMode(option.mode)}>
-              <Text>{option.title}</Text>
-            </Pressable>
-          );
-        })}
-        <Controller
+        {/* TODO: control type error **/}
+        <InputForm
           name="name"
+          label="Name"
           control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <TextInput
-                placeholder="Name"
-                value={value}
-                onChangeText={onChange}
-              />
-            );
-          }}
+          placeholder="Name"
         />
-        <Controller
+        <InputForm
+          label="Description"
           name="description"
           control={control}
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => {
-            return (
-              <TextInput
-                placeholder="Description"
-                value={value}
-                onChangeText={onChange}
-              />
-            );
-          }}
+          placeholder="Description"
         />
-        <View style={{ flexDirection: "row", flex: 1, maxHeight: "10%" }}>
-          <Controller
-            name="isInDiet"
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <>
-                  {dietSelectOptions.map((option) => {
-                    return (
-                      <Pressable
-                        style={{
-                          flex: 1,
-                          backgroundColor:
-                            value === option.isInDiet ? option.color : "grey",
-                          justifyContent: "center",
-                        }}
-                        onPress={() => onChange(option.isInDiet)}
-                        key={option.id}
-                      >
-                        <Text>{option.label}</Text>
-                      </Pressable>
-                    );
-                  })}
-                </>
-              );
-            }}
-          />
+        <View
+          style={{
+            flexDirection: "row",
+            flex: 1,
+            maxHeight: "10%",
+            justifyContent: "space-between",
+          }}
+        >
+          {dateTimePickerOptions.map((option) => {
+            return (
+              <View style={{ flex: 1, flexDirection: "column" }}>
+                <Text>{option.label}</Text>
+                <Pressable onPress={() => setPickerMode(option.mode)}>
+                  <Text>
+                    {option.mode === "date"
+                      ? format(date, "dd/MM/yyyy")
+                      : format(getTime(date), "HH:mm")}
+                  </Text>
+                </Pressable>
+              </View>
+            );
+          })}
         </View>
-        <Button title="Register meal" onPress={handleSubmit(onSubmit)} />
+
+        <DietToggle control={control} name="isInDiet" />
+        <Pressable onPress={handleSubmit(onSubmit)}>
+          <Text>Register meal</Text>
+        </Pressable>
       </View>
       {!!pickerMode && (
         <DateTimePicker
