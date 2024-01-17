@@ -5,13 +5,15 @@ export const dietSelectOptions: DietSelectOption[] = [
     id: 1,
     label: "Yes",
     isInDiet: true,
-    color: "green",
+    bgColor: "#E5F0DB",
+    bordercolor: "#639339",
   },
   {
     id: 2,
     label: "No",
     isInDiet: false,
-    color: "red",
+    bgColor: "#F4E6E7",
+    bordercolor: "#BF3B44",
   },
 ];
 

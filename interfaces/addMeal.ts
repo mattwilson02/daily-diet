@@ -2,7 +2,8 @@ export type DietSelectOption = {
   id: number;
   label: string;
   isInDiet: boolean;
-  color: string;
+  bordercolor: string;
+  bgColor: string;
 };
 
 export type DateTimePickerOption = {

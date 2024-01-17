@@ -4,9 +4,11 @@ import { Pressable, Text, View } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { dateTimePickerOptions } from "../../constants/addMeal";
 import { DateTimePickerOption } from "../../interfaces/addMeal";
-import InputForm from "../../components/InputForm";
+import InputForm, { inputStyleSheet } from "../../components/InputForm";
 import DietToggle from "../../components/DietToggle";
 import { format, getTime } from "date-fns";
+
+import Button from "../../components/Button";
 
 const AddNewMeal = () => {
   const [date, setDate] = useState(new Date());
@@ -23,10 +25,16 @@ const AddNewMeal = () => {
     console.log(date);
   }, []);
 
+  // TODO: button hidden by keyboard
   return (
-    <>
-      <View style={{ flex: 1 }}>
-        {/* TODO: control type error **/}
+    <View
+      style={{
+        paddingHorizontal: 24,
+        paddingVertical: 40,
+        backgroundColor: "#FAFAFA",
+      }}
+    >
+      <View style={{ gap: 24, flex: 1 }}>
         <InputForm
           name="name"
           label="Name"
@@ -35,9 +43,13 @@ const AddNewMeal = () => {
         />
         <InputForm
           label="Description"
+          multiline={true}
+          style={{
+            ...inputStyleSheet.input,
+            height: 100,
+          }}
           name="description"
           control={control}
-          placeholder="Description"
         />
         <View
           style={{
@@ -45,14 +57,15 @@ const AddNewMeal = () => {
             flex: 1,
             maxHeight: "10%",
             justifyContent: "space-between",
+            gap: 10,
           }}
         >
           {dateTimePickerOptions.map((option) => {
             return (
-              <View style={{ flex: 1, flexDirection: "column" }}>
-                <Text>{option.label}</Text>
+              <View style={{ flex: 1, flexDirection: "column", gap: 4 }}>
+                <Text style={inputStyleSheet.text}>{option.label}</Text>
                 <Pressable onPress={() => setPickerMode(option.mode)}>
-                  <Text>
+                  <Text style={inputStyleSheet.input}>
                     {option.mode === "date"
                       ? format(date, "dd/MM/yyyy")
                       : format(getTime(date), "HH:mm")}
@@ -63,24 +76,32 @@ const AddNewMeal = () => {
           })}
         </View>
 
+        {!!pickerMode && (
+          <DateTimePicker
+            style={{ alignSelf: "flex-start" }}
+            value={new Date()}
+            mode={pickerMode}
+            is24Hour={true}
+            display="default"
+            onChange={(_, selectedDate) => {
+              setDate(selectedDate as Date);
+              setPickerMode(null);
+            }}
+          />
+        )}
         <DietToggle control={control} name="isInDiet" />
-        <Pressable onPress={handleSubmit(onSubmit)}>
-          <Text>Register meal</Text>
-        </Pressable>
       </View>
-      {!!pickerMode && (
-        <DateTimePicker
-          value={new Date()}
-          mode={pickerMode}
-          is24Hour={true}
-          display="spinner"
-          onChange={(event, selectedDate) => {
-            setDate(selectedDate as Date);
-            setPickerMode(null);
+      <Button onPress={handleSubmit(onSubmit)}>
+        <Text
+          style={{
+            color: "#ffffff",
+            fontWeight: "700",
           }}
-        />
-      )}
-    </>
+        >
+          Register meal
+        </Text>
+      </Button>
+    </View>
   );
 };
 

@@ -1,31 +1,47 @@
 import { PropsWithChildren, forwardRef } from "react";
 import { Control, Controller } from "react-hook-form";
-import { Text, TextInput, TextInputProps } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputProps,
+  View,
+} from "react-native";
 
 type Props = {
   name: string;
   control: Control;
-  placeholder: string;
+
   label: string;
 } & TextInputProps;
 
+export const inputStyleSheet = StyleSheet.create({
+  input: {
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: "#DDDEDF",
+    padding: 14,
+    color: "#1B1D1E",
+  },
+  text: {
+    color: "#333638",
+  },
+});
+
 const InputForm = forwardRef<TextInput, Props>(
-  (
-    { name, control, placeholder, label, ...rest }: PropsWithChildren<Props>,
-    ref
-  ) => {
+  ({ name, control, label, ...rest }: PropsWithChildren<Props>, ref) => {
     /** TODO: styles */
 
     return (
-      <>
-        <Text>{label}</Text>
+      <View style={{ gap: 4 }}>
+        <Text style={inputStyleSheet.text}>{label}</Text>
         <Controller
           name={name}
           control={control}
           render={({ field: { onChange, value } }) => {
             return (
               <TextInput
-                placeholder={placeholder}
+                style={inputStyleSheet.input}
                 value={value}
                 onChangeText={onChange}
                 ref={ref}
@@ -34,7 +50,7 @@ const InputForm = forwardRef<TextInput, Props>(
             );
           }}
         />
-      </>
+      </View>
     );
   }
 );
