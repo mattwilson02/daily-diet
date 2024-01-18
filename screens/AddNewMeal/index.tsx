@@ -9,8 +9,16 @@ import DietToggle from "../../components/DietToggle";
 import { format, getTime } from "date-fns";
 
 import Button from "../../components/Button";
+import { useDispatch } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
+import { addMeal } from "../../redux/features/meal";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../routes";
 
-const AddNewMeal = () => {
+type Props = NativeStackScreenProps<RootStackParamList, "AddNewMeal">;
+
+const AddNewMeal = ({ navigation }: Props) => {
+  const dispatch = useDispatch();
   const [date, setDate] = useState(new Date());
   const [pickerMode, setPickerMode] = useState<
     DateTimePickerOption["mode"] | null
@@ -21,8 +29,11 @@ const AddNewMeal = () => {
   });
 
   const onSubmit = useCallback((data: FieldValues) => {
-    console.log(data);
-    console.log(date);
+    const id = nanoid();
+
+    dispatch(addMeal({ id, ...data }));
+
+    navigation.navigate("MealConfirmation", { id });
   }, []);
 
   // TODO: button hidden by keyboard

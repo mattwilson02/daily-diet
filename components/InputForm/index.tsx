@@ -30,8 +30,6 @@ export const inputStyleSheet = StyleSheet.create({
 
 const InputForm = forwardRef<TextInput, Props>(
   ({ name, control, label, ...rest }: PropsWithChildren<Props>, ref) => {
-    /** TODO: styles */
-
     return (
       <View style={{ gap: 4 }}>
         <Text style={inputStyleSheet.text}>{label}</Text>
