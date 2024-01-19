@@ -22,7 +22,11 @@ export const Routes = () => {
           component={AddNewMeal}
           options={{ headerTitle: "New Meal" }}
         />
-        <Stack.Screen name="MealConfirmation" component={MealConfirmation} />
+        <Stack.Screen
+          name="MealConfirmation"
+          component={MealConfirmation}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

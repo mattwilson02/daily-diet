@@ -20,6 +20,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "AddNewMeal">;
 const AddNewMeal = ({ navigation }: Props) => {
   const dispatch = useDispatch();
   const [date, setDate] = useState(new Date());
+  console.log(date, "date");
   const [pickerMode, setPickerMode] = useState<
     DateTimePickerOption["mode"] | null
   >(null);
@@ -31,12 +32,12 @@ const AddNewMeal = ({ navigation }: Props) => {
   const onSubmit = useCallback((data: FieldValues) => {
     const id = nanoid();
 
-    dispatch(addMeal({ id, ...data }));
+    dispatch(addMeal({ id, ...data, dateTime: date as Date }));
 
     navigation.navigate("MealConfirmation", { id });
   }, []);
 
-  // TODO: button hidden by keyboard
+  // TODO: button hidden by keyboard && form validation
   return (
     <View
       style={{
@@ -87,6 +88,7 @@ const AddNewMeal = ({ navigation }: Props) => {
           })}
         </View>
 
+        {/** TODO: bug on date picker */}
         {!!pickerMode && (
           <DateTimePicker
             style={{ alignSelf: "flex-start" }}
@@ -95,7 +97,7 @@ const AddNewMeal = ({ navigation }: Props) => {
             is24Hour={true}
             display="default"
             onChange={(_, selectedDate) => {
-              setDate(selectedDate as Date);
+              setDate(selectedDate);
               setPickerMode(null);
             }}
           />
