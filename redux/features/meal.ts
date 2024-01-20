@@ -10,27 +10,27 @@ export type Meal = {
 
 // TODO: unmock
 const initialState: Meal[] = [
-  // {
-  //   dateTime: "2024-01-19T08:54:12.397Z",
-  //   description: "Mdmannsj",
-  //   id: "Bo8yZ1_JGWnLj0ObDFo2s",
-  //   isInDiet: true,
-  //   name: "Meal",
-  // },
-  // {
-  //   dateTime: "2024-01-18T08:54:12.397Z",
-  //   description: "Mdmannsj",
-  //   id: "K-zNZXUH55DZ5JIa-q8cV",
-  //   isInDiet: false,
-  //   name: "Meal 2",
-  // },
-  // {
-  //   dateTime: "2024-01-18T07:54:12.397Z",
-  //   description: "Mdmannsj",
-  //   id: "-A9VlNIyL1kIIzwrcGzoa",
-  //   isInDiet: false,
-  //   name: "Meal 3",
-  // },
+  {
+    dateTime: "2024-01-19T08:54:12.397Z",
+    description: "Mdmannsj",
+    id: "Bo8yZ1_JGWnLj0ObDFo2s",
+    isInDiet: true,
+    name: "Meal",
+  },
+  {
+    dateTime: "2024-01-18T08:54:12.397Z",
+    description: "Mdmannsj",
+    id: "K-zNZXUH55DZ5JIa-q8cV",
+    isInDiet: false,
+    name: "Meal 2",
+  },
+  {
+    dateTime: "2024-01-18T07:54:12.397Z",
+    description: "Mdmannsj",
+    id: "-A9VlNIyL1kIIzwrcGzoa",
+    isInDiet: false,
+    name: "Meal 3",
+  },
 ];
 
 const mealSlice = createSlice({
