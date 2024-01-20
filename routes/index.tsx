@@ -3,10 +3,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import Dashboard from "../screens/Dashboard";
 import AddNewMeal from "../screens/AddNewMeal";
 import MealConfirmation from "../screens/MealConfirmation";
+import MealDetails from "../screens/MealDetails";
 
 export type RootStackParamList = {
   Dashboard: undefined;
   AddNewMeal: undefined;
+  MealDetails: undefined;
   MealConfirmation: { id: string };
 };
 
@@ -19,6 +21,11 @@ export const Routes = () => {
         <Stack.Screen
           name="Dashboard"
           component={Dashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MealDetails"
+          component={MealDetails}
           options={{ headerShown: false }}
         />
         <Stack.Screen

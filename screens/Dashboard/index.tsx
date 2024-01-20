@@ -52,14 +52,11 @@ const Dashboard = ({ navigation }: Props) => {
           backgroundColor: mealStats.backgroundColor,
           paddingVertical: 20,
           paddingHorizontal: 16,
-          flex: 1,
-          width: "100%",
           maxHeight: "20%",
-          justifyContent: "center",
           gap: 2,
-          alignItems: "center",
         }}
       >
+        {/** TODO: handle having 0 meals */}
         <Pressable
           onPress={() => navigation.navigate("MealDetails")}
           style={{ alignSelf: "flex-end" }}
@@ -70,19 +67,25 @@ const Dashboard = ({ navigation }: Props) => {
             color={mealStats.arrowColor}
           />
         </Pressable>
-        <Text style={{ color: "#1B1D1E", fontSize: 32, fontWeight: "700" }}>
-          {`${mealStats.percentage}%`}
-        </Text>
-        <Text style={{ color: "#333638", fontSize: 14 }}>
-          {mealStats.label}
-        </Text>
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ color: "#1B1D1E", fontSize: 32, fontWeight: "700" }}>
+            {`${mealStats.percentage}%`}
+          </Text>
+          <Text style={{ color: "#333638", fontSize: 14 }}>
+            {mealStats.label}
+          </Text>
+        </View>
       </View>
       <View
         style={{
           alignItems: "flex-start",
           gap: 8,
           flex: 1,
-
           maxHeight: "10%",
         }}
       >
