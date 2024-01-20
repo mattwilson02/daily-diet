@@ -16,7 +16,11 @@ export const Routes = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Dashboard">
-        <Stack.Screen name="Dashboard" component={Dashboard} />
+        <Stack.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="AddNewMeal"
           component={AddNewMeal}

@@ -1,15 +1,22 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Text, View, SectionList } from "react-native";
+import { Text, View, SectionList, Image, Pressable } from "react-native";
 import { RootStackParamList } from "../../routes";
 import { AntDesign } from "@expo/vector-icons";
 import { useAppSelector } from "../../redux/store";
 import Button from "../../components/Button";
 import { format } from "date-fns";
+import { useMealStatistics } from "../../hooks/useMealStatistics";
+import { Feather } from "@expo/vector-icons";
+// TODO: wtf is wrong witha assets here
+import Logo from "../../assets/logo/Logo.png";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Dashboard">;
 
 const Dashboard = ({ navigation }: Props) => {
   const meals = useAppSelector((state) => state.meals);
+  const { getMealPercentage } = useMealStatistics();
+
+  const mealStats = getMealPercentage();
 
   const groupedData = meals.reduce((groupedAccumulator, meal) => {
     const date = format(new Date(meal.dateTime), "dd.MM.yyyy");
@@ -29,7 +36,47 @@ const Dashboard = ({ navigation }: Props) => {
   }));
 
   return (
-    <View style={{ paddingHorizontal: 24, flex: 1 }}>
+    <View
+      style={{
+        paddingHorizontal: 24,
+        paddingVertical: 66,
+        flex: 1,
+        gap: 40,
+        backgroundColor: "#FAFAFA",
+      }}
+    >
+      <Image source={Logo} />
+      <View
+        style={{
+          borderRadius: 8,
+          backgroundColor: mealStats.backgroundColor,
+          paddingVertical: 20,
+          paddingHorizontal: 16,
+          flex: 1,
+          width: "100%",
+          maxHeight: "20%",
+          justifyContent: "center",
+          gap: 2,
+          alignItems: "center",
+        }}
+      >
+        <Pressable
+          onPress={() => navigation.navigate("MealDetails")}
+          style={{ alignSelf: "flex-end" }}
+        >
+          <Feather
+            name="arrow-up-right"
+            size={24}
+            color={mealStats.arrowColor}
+          />
+        </Pressable>
+        <Text style={{ color: "#1B1D1E", fontSize: 32, fontWeight: "700" }}>
+          {`${mealStats.percentage}%`}
+        </Text>
+        <Text style={{ color: "#333638", fontSize: 14 }}>
+          {mealStats.label}
+        </Text>
+      </View>
       <View
         style={{
           alignItems: "flex-start",
@@ -55,6 +102,7 @@ const Dashboard = ({ navigation }: Props) => {
         </Button>
       </View>
       <SectionList
+        style={{ maxHeight: "50%" }}
         renderItem={({ item }) => {
           return (
             <View
@@ -104,6 +152,7 @@ const Dashboard = ({ navigation }: Props) => {
             </View>
           );
         }}
+        stickySectionHeadersEnabled={false}
         renderSectionHeader={({ section: { title } }) => {
           return (
             <Text
