@@ -38,6 +38,7 @@ const mealSlice = createSlice({
   initialState,
   reducers: {
     addMeal: (state, action) => {
+      console.log(action.payload);
       state.push(action.payload);
     },
   },

@@ -9,6 +9,7 @@ import DietToggle from "../../components/DietToggle";
 import { format, getTime } from "date-fns";
 
 import Button from "../../components/Button";
+
 import { useDispatch } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import { addMeal } from "../../redux/features/meal";
@@ -19,7 +20,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "AddNewMeal">;
 
 const AddNewMeal = ({ navigation }: Props) => {
   const dispatch = useDispatch();
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState<Date>(new Date());
   console.log(date, "date");
   const [pickerMode, setPickerMode] = useState<
     DateTimePickerOption["mode"] | null
@@ -29,13 +30,16 @@ const AddNewMeal = ({ navigation }: Props) => {
     mode: "onChange",
   });
 
-  const onSubmit = useCallback((data: FieldValues) => {
-    const id = nanoid();
+  const onSubmit = useCallback(
+    (data: FieldValues) => {
+      const id = nanoid();
 
-    dispatch(addMeal({ id, ...data, dateTime: date as Date }));
+      dispatch(addMeal({ id, ...data, dateTime: date }));
 
-    navigation.navigate("MealConfirmation", { id });
-  }, []);
+      navigation.navigate("MealConfirmation", { id });
+    },
+    [date, dispatch, navigation]
+  );
 
   // TODO: button hidden by keyboard && form validation
   return (
@@ -88,16 +92,15 @@ const AddNewMeal = ({ navigation }: Props) => {
           })}
         </View>
 
-        {/** TODO: bug on date picker */}
         {!!pickerMode && (
           <DateTimePicker
             style={{ alignSelf: "flex-start" }}
-            value={new Date()}
+            value={date}
             mode={pickerMode}
             is24Hour={true}
-            display="default"
             onChange={(_, selectedDate) => {
               setDate(selectedDate);
+              console.log(selectedDate);
               setPickerMode(null);
             }}
           />

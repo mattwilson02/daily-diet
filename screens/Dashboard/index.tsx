@@ -12,7 +12,6 @@ const Dashboard = ({ navigation }: Props) => {
   const meals = useAppSelector((state) => state.meals);
 
   const groupedData = meals.reduce((groupedAccumulator, meal) => {
-    console.log(meal);
     const date = format(new Date(meal.dateTime), "dd.MM.yyyy");
 
     if (groupedAccumulator[date]) {
